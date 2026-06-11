@@ -19,48 +19,11 @@ This project demonstrates real-world data engineering challenges including schem
 
 ## Architecture
 
-```
-NYC TLC Source
-(6 Parquet files, Jan–Jun 2023)
-        |
-        | manual upload
-        v
-Unity Catalog — nyc_taxi_project
-        |
-  ------+------
-  |           |
-raw schema    |
-  taxi_raw_files volume         taxi_zone_lookup volume
-  (Parquet trip files)          (CSV lookup table)
-        |                               |
-        | unionByName +                 |
-        | type normalization            |
-        v                              |
-  BRONZE — yellow_taxi                |
-  19,493,618 records                  |
-  audit columns: _ingested_at,        |
-  _source_file, _file_size            |
-        |                              |
-        | null elimination             |
-        | business rule validation     |
-        | left join (zone enrichment) <+
-        | partition by year/month
-        | OPTIMIZE + ZORDER
-        v
-  SILVER — yellow_taxi
-  18,745,563 records
-  27 columns, 356 MB
-  19.9% query improvement post-ZORDER
-        |
-        +----------+----------+----------+
-        |          |          |          |
-        v          v          v          v
-  GOLD LAYER — 4 aggregation tables
-  daily_revenue    hourly_demand    zone_performance    payment_analysis
-  1,425 rows       1,311 rows       261 rows            233 rows
-  Revenue by       Trips by         Revenue by          Cash vs card
-  day + borough    hour + borough   pickup zone         trends
-```
+This project implements an end-to-end Databricks Lakehouse using the Medallion Architecture pattern. Data flows from raw TLC trip files through Bronze, Silver, and Gold layers before being consumed by analytics and reporting workloads.
+
+<p align="center">
+  <img src="images/nyc-taxi-data-lakehouse-architecture.png" alt="NYC Taxi Data Lakehouse Architecture">
+</p>
 
 ---
 
