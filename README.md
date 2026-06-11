@@ -1,4 +1,4 @@
-# NYC Taxi Medallion Architecture
+# NYC Taxi Medallion Pipeline
 ### End-to-End Data Engineering Pipeline on Databricks + Delta Lake
 
 ![Databricks](https://img.shields.io/badge/Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white)
